@@ -240,7 +240,7 @@ function __dialog_test_branching() {
 			name: "end",
 			text: "This is the end of the dialog.",
 		},
-	]).dialog_steps;
+	]);//.dialog_steps;
 	var expected_result = [
 		{
 			name: "auto_0",
@@ -295,7 +295,11 @@ function __dialog_test_branching() {
 			data: undefined,
 		},
 	];
-	__dialog_compare(test, expected_result);
+	dialog_advance(test);
+	dialog_choice_increment(test);
+	dialog_advance(test);
+	dialog_advance(test);
+	__dialog_compare(test.dialog_steps, expected_result);
 }
 
 function __dialog_tests() {

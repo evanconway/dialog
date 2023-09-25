@@ -4,7 +4,9 @@
  * @param {Array<Any>} steps
  */
 function Dialog(steps) constructor {
-	step = "";
+	if (!is_array(steps) || array_length(steps) <= 0) show_error("Dialog steps must be array of size 1 or greater.", true);
+	
+	current_step = "";
 	choice = 0;
 	language_index = 0;
 	
@@ -32,8 +34,7 @@ function Dialog(steps) constructor {
 	
 	var steps_length = array_length(steps);
 	dialog_steps = array_create(steps_length);
-	
-	var step_names = ds_map_create();
+	step_map = ds_map_create();
 	
 	// iterate over given steps and convert shorthand steps to full steps
 	for (var i = 0; i < steps_length; i++) {
@@ -49,7 +50,7 @@ function Dialog(steps) constructor {
 		if (is_array(steps[i]) || is_string(steps[i])) {
 			dialog_steps[i].text = get_text_from_text(steps[i]);
 		}
-		ds_map_set(step_names, dialog_steps[i].name, undefined);
+		ds_map_set(step_map, dialog_steps[i].name, undefined);
 	}
 	
 	// define choices for steps with undefined choices, and ensure defined choices are valid
@@ -60,10 +61,76 @@ function Dialog(steps) constructor {
 		}
 		for (var c = 0; c < array_length(dialog_steps[i].choices); c++) {
 			var choice_name = dialog_steps[i].choices[c].goto;
-			if (!ds_map_exists(step_names, choice_name)) show_error($"step name {dialog_steps[i].name} index {i} choice {c} has invalid goto {choice_name}", true);
+			if (!ds_map_exists(step_map, choice_name)) show_error($"step name {dialog_steps[i].name} index {i} choice {c} has invalid goto {choice_name}", true);
 			dialog_steps[i].choices[c].text = get_text_from_text(dialog_steps[i].choices[c].text);
 		}
+		ds_map_set(step_map, dialog_steps[i].name, dialog_steps[i]);
 	}
 	
-	ds_map_destroy(step_names);
+	current_step = dialog_steps[0].name;
+	
+	static get_current_step = function() {
+		return ds_map_find_value(step_map, current_step);
+	};
+}
+
+/**
+ * Returns the text of the current step and language index.
+ *
+ * @param {Struct.Dialog} dialog
+ * @return {string}
+ */
+function dialog_get_text(dialog) {
+	with (dialog) {
+		// feather ignore GM1045 once
+		return get_current_step().text[language_index];
+	}
+}
+
+/**
+ * Set choice index.
+ *
+ * @param {Struct.Dialog} dialog The Dialog instance to set the choice of.
+ * @param {real} choice_index New index to set current choice to. Value is clamped to valid options for the current step.
+ */
+function dialog_choice_set(dialog, choice_index) {
+	with (dialog) {
+		choice = clamp(choice_index, 0, array_length(get_current_step().choices));
+	}
+}
+
+/**
+ * Increment choice index. Value does not increase past number of choices or wrap.
+ *
+ * @param {Struct.Dialog} dialog The Dialog instance to increment the choice of.
+ */
+function dialog_choice_increment(dialog) {
+	with (dialog) {
+		choice = clamp(choice + 1, 0, array_length(get_current_step().choices));
+	}
+}
+
+/**
+ * Decrement choice index. Value does not Decrease below 0 or wrap.
+ *
+ * @param {Struct.Dialog} dialog The Dialog instance to decrement the choice of.
+ */
+function dialog_choice_decrement(dialog) {
+	with (dialog) {
+		choice = clamp(choice - 1, 0, array_length(get_current_step().choices));
+	}
+}
+
+/**
+ * Advances dialog to next step. The next step is decided by the current choice index.
+ *
+ * @param {Struct.Dialog} dialog
+ */
+function dialog_advance(dialog) {
+	with (dialog) {
+		var step = get_current_step();
+		if (array_length(step.choices) <= 0) return;
+		current_step = step.choices[choice].goto;
+		choice = 0;
+	}
 }
