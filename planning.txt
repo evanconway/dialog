@@ -1,0 +1,149 @@
+24th of September, 2023
+
+This is going to be a package for quickly and easily setting up dialog. This is not our first try at this, which is lucky in this case. We can copy a lot of the logic we have from earlier projects. Let's see if we can summarize before we begin coding.
+
+A dialog is a map. The key is the name of the "step" in the dialog, and the value is a struct with important data about that step. Here's the scheme for a step using some pseudo code:
+
+dialog_step {
+	name: string,
+	text: Map<language, string>,
+	choices: Array<{ text: Map<language, string>, goto: string }>,
+	goto: string,
+	is_end: boolean,
+	data: any,
+};
+
+
+Let's explain each field briefly.
+
+Name: pretty self explanatory, just a name of the step, and is used as the key for the step in the dialog map.
+Text: A mapping of languages to text. This is how we support multiple languages.
+Choices: Array of objects with text and a goto. Goto is the name of another step in the map, and is how we support branches.
+Goto: The name of the step to go to after this one.
+Is_end: Boolean determining if the dialog ends at this step.
+Data: Untyped field. This can be anything else we may want to store during the step, like information about character portraits, text styling, or whatever.
+
+
+The only state a dialog needs to keep track of is which step it's on at any given time. So we also need functions to tell the dialog to advance to the next step. This depends on if the current step has choices or not because if it has choices, we need to use the gotos of the choices instead of the goto. Actually I wonder if we should get rid of the goto field completely, and simply allow a single textless choice when we don't want any options? let's do that:
+
+dialog_step {
+	name: string,
+	text: Map<language, string>,
+	choices: Array<{ text: Map<language, string>, goto: string }>,
+	is_end: boolean,
+	data: any,
+};
+
+So with that decided. Perhaps we'll add another state variable the dialog mantains, and that is the current "choice" for the next goto. This way could simply have an "advance" function which uses the goto of the current choice. This would default to 0 since most dialog steps won't have choices. But we would also have a function to set the choice for the current step. Hmmm... now I wonder if we couldn't replace the "is_end" field with simply having an empty array of choices?? Let's try that and see if it works.
+
+dialog_step {
+	name: string,
+	text: Map<language, string>,
+	choices: Array<{ text: Map<language, string>, goto: string }>,
+	data: any,
+};
+
+It certainly helps simplify our data. Now explored a lot of options for actually adding dialog to the dialog object, but it quickly became clear we should start with simply creating it with an array of existing steps. If we want extra functionality, like the ability to add steps after creation, or even load dialog data from external files, we could easily add it later. The advantage of starting with creating dialog from an existing array is we could more easily do it right in the game code.
+
+I think the last thing to consider before we start coding is the concept of shortcut data. By this I mean adding steps that are incomplete, or different from the above scheme, but get translated into correct steps. Here's a perfect example of something I'd like to do:
+
+var dialog = new Dialog([
+	"Hello!",
+	"Welcome to the game.",
+	"Don't let the monsters get you.",
+	"Goodbye for now.",
+]);
+
+The above is super quick and easy to add to a game. Perfect for playtesting and prototyping. But obviously this isn't the data we described above. We want our dialog object to translate this into:
+
+[
+	{
+		name: "auto_1",
+		text: {
+			"eng": "Hello!",
+		},
+		choices: [
+			{
+				text: // empty map
+				goto: "auto_2"
+			}
+		],
+		data: undefined,
+	},
+	{
+		name: "auto_2",
+		text: {
+			"eng": "Welcome to the game.",
+		},
+		choices: [
+			{
+				text: // empty map
+				goto: "auto_3"
+			}
+		],
+		data: undefined,
+	},
+	{
+		name: "auto_3",
+		text: {
+			"eng": "Don't let the monsters get you.",
+		},
+		choices: [
+			{
+				text: // empty map
+				goto: "auto_4"
+			}
+		],
+		data: undefined,
+	},
+	{
+		name: "auto_4",
+		text: {
+			"eng": "Goodbye for now.",
+		},
+		choices: [],
+		data: undefined,
+	},
+	"Goodbye for now.",
+]
+
+There are details I may change, such as the automatic name chosen, but the intent is hopefully clear. The programmer should be able to add shorthand for data, and the parser will create finished correct data. I also think we should be able to add steps that just have names of languages as field names, and the translation of the text in that language. For example:
+
+{
+	"eng": "hello",
+	"esp": "hola",
+	"fra": "bonjour",
+	"jpn": "こんにちは",
+}
+
+turns into:
+
+{
+	name: "auto_1",
+	text: {
+		"eng": "hello",
+		"esp": "hola",
+		"fra": "bonjour",
+		"jpn": "こんにちは",
+	},
+	choices: [
+		{
+			text: // empty map
+			goto: "auto_2"
+		}
+	],
+	data: undefined,
+}
+
+Also, after looking at this I wonder if we shouldn't use an array for languages instead of a map. It would be more universal, easier to write in-line, and allows for faster lookup than string comparison. I remember having a reason for using string keys in the past. Maybe it was easier to stay organized? Let's try the array for now and see how it goes:
+
+dialog_step {
+	name: string,
+	text: Array<string>,
+	choices: Array<{ text: Array<string>, goto: string }>,
+	data: any,
+};
+
+We'll try the array but I'm going to try not worry about lookup spedds for integers vs strings. I know it's slower but we shouldn't worry about it yet. I think I'm letting a random GDC video I watched get to me.
+
+That may not be the best description of our plan, but it's good enough that I've grasped the problem in my head. Let's try coding some stuff and see what happens.
