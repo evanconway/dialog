@@ -72,7 +72,8 @@ function __dialog_compare(a, b) {
 	}
 }
 
-function dialog_test_string_shortcut() {
+function __dialog_test_string_shortcut() {
+	show_debug_message("dialog testing string shorthand");
 	var expected_result = [
 		{
 			name: "auto_0",
@@ -126,9 +127,93 @@ function dialog_test_string_shortcut() {
 	__dialog_compare(test, expected_result);
 }
 
+function __dialog_test_lang_shortcut() {
+	show_debug_message("dialog testing array shorthand");
+	var expected_result = [
+		{
+			name: "auto_0",
+			text: [
+				"Hello!",
+				"こんにちは",
+				"¡Hola!",
+			],
+			choices: [
+				{
+					text: [],
+					goto: "auto_1",
+				}
+			],
+			data: undefined,
+		},
+		{
+			name: "auto_1",
+			text: [
+				"Welcome to the game.",
+				"ゲームへようこそ。",
+				"Bienvenida al juego.",
+			],
+			choices: [
+				{
+					text: [],
+					goto: "auto_2",
+				}
+			],
+			data: undefined,
+		},
+		{
+			name: "auto_2",
+			text: [
+				"Don't let the monsters get you.",
+				"モンスターに騙されないようにしましょう。",
+				"No dejes que los monstruos te atrapen.",
+			],
+			choices: [
+				{
+					text: [],
+					goto: "auto_3",
+				}
+			],
+			data: undefined,
+		},
+		{
+			name: "auto_3",
+			text: [
+				"Goodbye for now.",
+				"とりあえずさようなら。",
+				"Adiós por ahora.",
+			],
+			choices: [],
+			data: undefined,
+		},
+	];
+	var test = new Dialog([
+		[
+			"Hello!",
+			"こんにちは",
+			"¡Hola!",
+		],
+		[
+			"Welcome to the game.",
+			"ゲームへようこそ。",
+			"Bienvenida al juego.",
+		],
+		[
+			"Don't let the monsters get you.",
+			"モンスターに騙されないようにしましょう。",
+			"No dejes que los monstruos te atrapen.",
+		],
+		[
+			"Goodbye for now.",
+			"とりあえずさようなら。",
+			"Adiós por ahora.",
+		],
+	]).dialog_steps;
+	__dialog_compare(test, expected_result);
+}
 
 function __dialog_tests() {
-	dialog_test_string_shortcut();
+	__dialog_test_string_shortcut();
+	__dialog_test_lang_shortcut();
 }
 
 __dialog_tests();
