@@ -61,6 +61,7 @@ function Dialog(steps) constructor {
 		for (var c = 0; c < array_length(dialog_steps[i].choices); c++) {
 			var choice_name = dialog_steps[i].choices[c].goto;
 			if (!ds_map_exists(step_names, choice_name)) show_error($"step name {dialog_steps[i].name} index {i} choice {c} has invalid goto {choice_name}", true);
+			dialog_steps[i].choices[c].text = get_text_from_text(dialog_steps[i].choices[c].text);
 		}
 	}
 	

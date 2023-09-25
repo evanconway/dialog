@@ -211,9 +211,97 @@ function __dialog_test_lang_shortcut() {
 	__dialog_compare(test, expected_result);
 }
 
+function __dialog_test_branching() {
+	show_debug_message("dialog testing branching");
+	var test = new Dialog([
+		"Hello!",
+		{
+			text: "Make your choice...",
+			choices: [
+				{ text: "A", goto: "A" },
+				{ text: "B", goto: "B" },
+			]
+		},
+		{
+			name: "A",
+			text: "You've chosen A.",
+			choices: [
+				{ text: [], goto: "end" }
+			],
+		},
+				{
+			name: "B",
+			text: "You've chosen B.",
+			choices: [
+				{ text: [], goto: "end" }
+			],
+		},
+		{
+			name: "end",
+			text: "This is the end of the dialog.",
+		},
+	]).dialog_steps;
+	var expected_result = [
+		{
+			name: "auto_0",
+			text: [
+				"Hello!",
+			],
+			choices: [
+				{
+					text: [],
+					goto: "auto_1",
+				}
+			],
+			data: undefined,
+		},
+		{
+			name: "auto_1",
+			text: [
+				"Make your choice...",
+			],
+			choices: [
+				{ text: ["A"], goto: "A" },
+				{ text: ["B"], goto: "B" },
+			],
+			data: undefined,
+		},
+{
+			name: "A",
+			text: [
+				"You've chosen A."
+			],
+			choices: [
+				{ text: [], goto: "end" }
+			],
+			data: undefined,
+		},
+		{
+			name: "B",
+			text: [
+				"You've chosen B."
+			],
+			choices: [
+				{ text: [], goto: "end" }
+			],
+			data: undefined
+		},
+		{
+			name: "end",
+			text: [
+				"This is the end of the dialog."
+			],
+			choices: [],
+			data: undefined,
+		},
+	];
+	__dialog_compare(test, expected_result);
+}
+
 function __dialog_tests() {
 	__dialog_test_string_shortcut();
 	__dialog_test_lang_shortcut();
+	__dialog_test_branching();
 }
 
 __dialog_tests();
