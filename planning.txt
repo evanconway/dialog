@@ -147,3 +147,5 @@ dialog_step {
 We'll try the array but I'm going to try not worry about lookup spedds for integers vs strings. I know it's slower but we shouldn't worry about it yet. I think I'm letting a random GDC video I watched get to me.
 
 That may not be the best description of our plan, but it's good enough that I've grasped the problem in my head. Let's try coding some stuff and see what happens.
+
+We were able to write up the initial creation code. Though I am worried about how to test this properly. I think we could give it some hand picked data, like the examples above, and ensure it's spitting back out what we expect. Let's start by making some sort of deep compare function, write up the above examples, and go from there.

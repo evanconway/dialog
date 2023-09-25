@@ -53,8 +53,11 @@ function Dialog(steps) constructor {
 	}
 	
 	// define choices for steps with undefined choices, and ensure defined choices are valid
-	for (var i = 0; i < steps_length - 1; i++) {
-		if (dialog_steps[i].choices == undefined) dialog_steps[i].choices = [{ text: [], goto: dialog_steps[i + 1].name }];
+	for (var i = 0; i < steps_length; i++) {
+		if (dialog_steps[i].choices == undefined) {
+			if (i == steps_length - 1) dialog_steps[i].choices = [];
+			else dialog_steps[i].choices = [{ text: [], goto: dialog_steps[i + 1].name }];
+		}
 		for (var c = 0; c < array_length(dialog_steps[i].choices); c++) {
 			var choice_name = dialog_steps[i].choices[c].goto;
 			if (!ds_map_exists(step_names, choice_name)) show_error($"step name {dialog_steps[i].name} index {i} choice {c} has invalid goto {choice_name}", true);
