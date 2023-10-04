@@ -63,14 +63,12 @@ function Dialog(steps) constructor {
 		if (step.choices == undefined) {
 			if (i == steps_length - 1) step.choices = [];
 			else step.choices = [{ text: [], goto: dialog_steps[i + 1].name }];
-			// choice languages must be same number as text or 0
-			for (var c = 0; c < array_length(step.choices); c++) {
-				var choice_num_of_langs = array_length(step.choices[c].text);
-				if (choice_num_of_langs > 0 && choice_num_of_langs != num_of_langs) throw("Dialog steps must all have same number of languages in text.");
-			}
 		}
 		
 		for (var c = 0; c < array_length(step.choices); c++) {
+			// choice languages must be same number as text or 0
+			var choice_num_of_langs = array_length(step.choices[c].text);
+			if (choice_num_of_langs > 0 && choice_num_of_langs != num_of_langs) throw("Dialog steps must all have same number of languages in text.");
 			var choice_name = step.choices[c].goto;
 			if (!ds_map_exists(step_map, choice_name)) throw($"step name {step.name} index {i} choice {c} has invalid goto {choice_name}");
 			step.choices[c].text = get_text_from_text(step.choices[c].text);

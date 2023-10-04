@@ -326,7 +326,65 @@ function __dialog_test_wrong_lang_num() {
 	} catch (error) {
 		if (error != undefined) error_thrown = true;
 	}
-	if (!error_thrown) show_error($"Dialog was created with inconsistent number of languages. This should not be possible.", true);
+	if (!error_thrown) show_error($"Dialog was created with inconsistent number of languages in text. This should not be possible.", true);
+	error_thrown = false;
+	try {
+		var test = new Dialog([
+			{
+				text: [
+					"Choose A or B.",
+				],
+				choices: [
+					{
+						text: [
+							"choose A",
+							"choose A other language",
+						],
+						goto: "A",
+					},
+					{
+						text: [
+							"choose B",
+						],
+						goto: "B",
+					},
+				],
+			},
+			{
+				name: "A",
+				text: [
+					"You chose A!"
+				],
+				choices: [
+					{
+						text: [],
+						goto: "end",
+					}
+				],
+			},
+			{
+				name: "B",
+				text: [
+					"You chose B!"
+				],
+				choices: [
+					{
+						text: [],
+						goto: "end",
+					}
+				],
+			},
+			{
+				name: "end",
+				text: [
+					"it's the end",
+				]
+			}
+		]);
+	} catch (error) {
+		if (error != undefined) error_thrown = true;
+	}
+	if (!error_thrown) show_error($"Dialog was created with inconsistent number of languages in choices. This should not be possible.", true);
 }
 
 function __dialog_tests() {
