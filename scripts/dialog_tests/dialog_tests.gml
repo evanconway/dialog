@@ -240,7 +240,7 @@ function __dialog_test_branching() {
 			name: "end",
 			text: "This is the end of the dialog.",
 		},
-	]);//.dialog_steps;
+	]);
 	var expected_result = [
 		{
 			name: "auto_0",
@@ -266,7 +266,7 @@ function __dialog_test_branching() {
 			],
 			data: undefined,
 		},
-{
+		{
 			name: "A",
 			text: [
 				"You've chosen A."
@@ -302,10 +302,38 @@ function __dialog_test_branching() {
 	__dialog_compare(test.dialog_steps, expected_result);
 }
 
+function __dialog_test_wrong_lang_num() {
+	var error_thrown = false;
+	try {
+		var test = new Dialog([
+			[
+				"Hello!",
+				"こんにちは",
+				"¡Hola!",
+			],
+			[
+				"Welcome to the game.",
+				"Bienvenida al juego.",
+			],
+			[
+				"Don't let the monsters get you.",
+				"モンスターに騙されないようにしましょう。",
+			],
+			[
+				"Adiós por ahora.",
+			],
+		]);
+	} catch (error) {
+		if (error != undefined) error_thrown = true;
+	}
+	if (!error_thrown) show_error($"Dialog was created with inconsistent number of languages. This should not be possible.", true);
+}
+
 function __dialog_tests() {
 	__dialog_test_string_shortcut();
 	__dialog_test_lang_shortcut();
 	__dialog_test_branching();
+	__dialog_test_wrong_lang_num();
 }
 
 __dialog_tests();

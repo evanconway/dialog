@@ -4,7 +4,7 @@
  * @param {Array<Any>} steps
  */
 function Dialog(steps) constructor {
-	if (!is_array(steps) || array_length(steps) <= 0) show_error("Dialog steps must be array of size 1 or greater.", true);
+	if (!is_array(steps) || array_length(steps) <= 0) throw("Dialog steps must be array of size 1 or greater.");
 	
 	current_step = "";
 	choice = 0;
@@ -29,7 +29,7 @@ function Dialog(steps) constructor {
 		// feather disable GM1045 once
 		if (is_array(text_string_or_array)) return text_string_or_array;
 		if (is_string(text_string_or_array)) return [text_string_or_array];
-		show_error("get_text_from_text was given input that is neither an array or a string", true);
+		throw("get_text_from_text was given input that is neither an array or a string");
 	};
 	
 	var steps_length = array_length(steps);
@@ -53,18 +53,29 @@ function Dialog(steps) constructor {
 		ds_map_set(step_map, dialog_steps[i].name, undefined);
 	}
 	
-	// define choices for steps with undefined choices, and ensure defined choices are valid
+	// all text and choices should have the same number of languages
+	var num_of_langs = array_length(dialog_steps[0].text);
+	
+	// define choices for steps with undefined choices, ensure defined choices are valid, and ensure text and choice length are all the same
 	for (var i = 0; i < steps_length; i++) {
-		if (dialog_steps[i].choices == undefined) {
-			if (i == steps_length - 1) dialog_steps[i].choices = [];
-			else dialog_steps[i].choices = [{ text: [], goto: dialog_steps[i + 1].name }];
+		var step = dialog_steps[i];
+		if (array_length(step.text) != num_of_langs) throw("Dialog steps must all have same number of languages in text.");
+		if (step.choices == undefined) {
+			if (i == steps_length - 1) step.choices = [];
+			else step.choices = [{ text: [], goto: dialog_steps[i + 1].name }];
+			// choice languages must be same number as text or 0
+			for (var c = 0; c < array_length(step.choices); c++) {
+				var choice_num_of_langs = array_length(step.choices[c].text);
+				if (choice_num_of_langs > 0 && choice_num_of_langs != num_of_langs) throw("Dialog steps must all have same number of languages in text.");
+			}
 		}
-		for (var c = 0; c < array_length(dialog_steps[i].choices); c++) {
-			var choice_name = dialog_steps[i].choices[c].goto;
-			if (!ds_map_exists(step_map, choice_name)) show_error($"step name {dialog_steps[i].name} index {i} choice {c} has invalid goto {choice_name}", true);
-			dialog_steps[i].choices[c].text = get_text_from_text(dialog_steps[i].choices[c].text);
+		
+		for (var c = 0; c < array_length(step.choices); c++) {
+			var choice_name = step.choices[c].goto;
+			if (!ds_map_exists(step_map, choice_name)) throw($"step name {step.name} index {i} choice {c} has invalid goto {choice_name}");
+			step.choices[c].text = get_text_from_text(step.choices[c].text);
 		}
-		ds_map_set(step_map, dialog_steps[i].name, dialog_steps[i]);
+		ds_map_set(step_map, step.name, step);
 	}
 	
 	current_step = dialog_steps[0].name;
