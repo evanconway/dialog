@@ -214,39 +214,37 @@ function __dialog_test_lang_shortcut() {
 function __dialog_test_branching() {
 	show_debug_message("dialog testing branching");
 	var test = new Dialog([
-		"Hello!",
+		["Hello!", "¡Hola!"],
 		{
-			text: "Make your choice...",
+			text: ["Make your choice...", "Haz tu elección..."],
 			choices: [
-				{ text: "A", goto: "A" },
-				{ text: "B", goto: "B" },
+				{ text: ["One", "Uno"], goto: "one" },
+				{ text: ["Two", "Dos"], goto: "two" },
 			]
 		},
 		{
-			name: "A",
-			text: "You've chosen A.",
+			name: "one",
+			text: ["You've chosen One.", "Has elegido Uno."],
 			choices: [
 				{ text: [], goto: "end" }
 			],
 		},
 				{
-			name: "B",
-			text: "You've chosen B.",
+			name: "two",
+			text: ["You've chosen Two.", "Has elegido Dos."],
 			choices: [
 				{ text: [], goto: "end" }
 			],
 		},
 		{
 			name: "end",
-			text: "This is the end of the dialog.",
+			text: ["This is the end of the dialog.", "Este es el final del diálogo."],
 		},
 	]);
 	var expected_result = [
 		{
 			name: "auto_0",
-			text: [
-				"Hello!",
-			],
+			text: ["Hello!", "¡Hola!"],
 			choices: [
 				{
 					text: [],
@@ -257,30 +255,24 @@ function __dialog_test_branching() {
 		},
 		{
 			name: "auto_1",
-			text: [
-				"Make your choice...",
-			],
+			text: ["Make your choice...", "Haz tu elección..."],
 			choices: [
-				{ text: ["A"], goto: "A" },
-				{ text: ["B"], goto: "B" },
+				{ text: ["One", "Uno"], goto: "one" },
+				{ text: ["Two", "Dos"], goto: "two" },
 			],
 			data: undefined,
 		},
 		{
-			name: "A",
-			text: [
-				"You've chosen A."
-			],
+			name: "one",
+			text: ["You've chosen One.", "Has elegido Uno."],
 			choices: [
 				{ text: [], goto: "end" }
 			],
 			data: undefined,
 		},
 		{
-			name: "B",
-			text: [
-				"You've chosen B."
-			],
+			name: "two",
+			text: ["You've chosen Two.", "Has elegido Dos."],
 			choices: [
 				{ text: [], goto: "end" }
 			],
@@ -288,21 +280,25 @@ function __dialog_test_branching() {
 		},
 		{
 			name: "end",
-			text: [
-				"This is the end of the dialog."
-			],
+			text: ["This is the end of the dialog.", "Este es el final del diálogo."],
 			choices: [],
 			data: undefined,
 		},
 	];
 	dialog_advance(test);
 	dialog_choice_increment(test);
+	dialog_choice_increment(test);
+	dialog_choice_increment(test);
+	dialog_choice_increment(test); // too many calls should not break
 	dialog_advance(test);
+	if (dialog_get_text(test) != "You've chosen Two.") show_error("Dialog branch should've gone to Two.", true);
 	dialog_advance(test);
+	if (dialog_get_text(test) != "This is the end of the dialog.") show_error("Dialog branch text should be end.", true);
 	__dialog_compare(test.dialog_steps, expected_result);
 }
 
 function __dialog_test_wrong_lang_num() {
+	show_debug_message("dialog testing language count check");
 	var error_thrown = false;
 	try {
 		var test = new Dialog([

@@ -6,7 +6,7 @@
 function Dialog(steps) constructor {
 	if (!is_array(steps) || array_length(steps) <= 0) throw("Dialog steps must be array of size 1 or greater.");
 	
-	current_step = "";
+	current_step_name = "";
 	choice = 0;
 	language_index = 0;
 	
@@ -76,10 +76,10 @@ function Dialog(steps) constructor {
 		ds_map_set(step_map, step.name, step);
 	}
 	
-	current_step = dialog_steps[0].name;
+	current_step_name = dialog_steps[0].name;
 	
 	static get_current_step = function() {
-		return ds_map_find_value(step_map, current_step);
+		return ds_map_find_value(step_map, current_step_name);
 	};
 }
 
@@ -97,6 +97,15 @@ function dialog_get_text(dialog) {
 }
 
 /**
+ * Return current choice index.
+ *
+ * @param {Struct.Dialog} dialog
+ */
+function dialog_get_choice(dialog) {
+	return dialog.choice;
+}
+
+/**
  * Set choice index.
  *
  * @param {Struct.Dialog} dialog The Dialog instance to set the choice of.
@@ -104,7 +113,7 @@ function dialog_get_text(dialog) {
  */
 function dialog_choice_set(dialog, choice_index) {
 	with (dialog) {
-		choice = clamp(choice_index, 0, array_length(get_current_step().choices));
+		choice = clamp(choice_index, 0, array_length(get_current_step().choices) - 1);
 	}
 }
 
@@ -115,7 +124,7 @@ function dialog_choice_set(dialog, choice_index) {
  */
 function dialog_choice_increment(dialog) {
 	with (dialog) {
-		choice = clamp(choice + 1, 0, array_length(get_current_step().choices));
+		choice = clamp(choice + 1, 0, array_length(get_current_step().choices) - 1);
 	}
 }
 
@@ -126,7 +135,7 @@ function dialog_choice_increment(dialog) {
  */
 function dialog_choice_decrement(dialog) {
 	with (dialog) {
-		choice = clamp(choice - 1, 0, array_length(get_current_step().choices));
+		choice = clamp(choice - 1, 0, array_length(get_current_step().choices) - 1);
 	}
 }
 
@@ -139,7 +148,7 @@ function dialog_advance(dialog) {
 	with (dialog) {
 		var step = get_current_step();
 		if (array_length(step.choices) <= 0) return;
-		current_step = step.choices[choice].goto;
+		current_step_name = step.choices[choice].goto;
 		choice = 0;
 	}
 }
