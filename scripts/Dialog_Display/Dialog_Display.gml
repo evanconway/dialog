@@ -26,3 +26,7 @@ function dialog_display_choice_increment() {
 function dialog_display_choice_decrement() {
 	dialog_choice_decrement(global.dialog_display.dialog);
 }
+
+function dialog_display_is_at_end() {
+	return dialog_is_at_end(global.dialog_display.dialog);
+}

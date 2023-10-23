@@ -24,6 +24,7 @@
     {"id":{"name":"dialog_tests","path":"scripts/dialog_tests/dialog_tests.yy",},},
     {"id":{"name":"Dialog","path":"scripts/Dialog/Dialog.yy",},},
     {"id":{"name":"obj_dialog_display","path":"objects/obj_dialog_display/obj_dialog_display.yy",},},
+    {"id":{"name":"fnt_generic","path":"fonts/fnt_generic/fnt_generic.yy",},},
     {"id":{"name":"obj_test","path":"objects/obj_test/obj_test.yy",},},
     {"id":{"name":"Dialog_Display","path":"scripts/Dialog_Display/Dialog_Display.yy",},},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},

@@ -105,10 +105,20 @@ function dialog_get_choice(dialog) {
 	return dialog.choice;
 }
 
-function dialog_get_choice_text(dialog) {
+/**
+ * Return array of choices text.
+ *
+ * @param {Struct.Dialog} dialog
+ */
+function dialog_get_choices_text(dialog) {
+	var result = [];
 	with (dialog) {
-		var text = get_current_step().choices[choice].text
-		return array_length(text) > 0 ? text[language_index] : "";
+		var choices = get_current_step().choices;
+		for (var i = 0; i < array_length(choices); i++) {
+			var text = get_current_step().choices[i].text;
+			if (array_length(text) > 0) array_push(result, text[language_index]);
+		}
+		return result;
 	}
 }
 
@@ -157,5 +167,16 @@ function dialog_advance(dialog) {
 		if (array_length(step.choices) <= 0) return;
 		current_step_name = step.choices[choice].goto;
 		choice = 0;
+	}
+}
+
+/**
+ * Indicates if the current step is an end of the dialog (there could be more than one).
+ *
+ * @param {Struct.Dialog} dialog
+ */
+function dialog_is_at_end(dialog) {
+	with (dialog) {
+		return array_length(get_current_step().choices) == 0;
 	}
 }
