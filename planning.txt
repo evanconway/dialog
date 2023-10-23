@@ -144,7 +144,7 @@ dialog_step {
 	data: any,
 };
 
-We'll try the array but I'm going to try not worry about lookup spedds for integers vs strings. I know it's slower but we shouldn't worry about it yet. I think I'm letting a random GDC video I watched get to me.
+We'll try the array but I'm going to try not worry about lookup speeds for integers vs strings. I know it's slower but we shouldn't worry about it yet. I think I'm letting a random GDC video I watched get to me.
 
 That may not be the best description of our plan, but it's good enough that I've grasped the problem in my head. Let's try coding some stuff and see what happens.
 
@@ -153,3 +153,12 @@ We were able to write up the initial creation code. Though I am worried about ho
 We've had success adding more tests. Though I just realized we need to add a check to ensure all text and choice text have the exact same number of languages for a given dialog.
 
 We haven't added our language number check, but we added basic functions to interact with the dialog state. A lot of things seem to be working well. It seems like we may be able to ignore tracking the name of the current step, and instead simply reference the step itself. We'll explore this more tomorrow.
+
+
+23rd of October, 2023
+
+Why is the last entry September 24th? Need to check planning.txt file on machine back home later. Though there's no .gitignore here? Maybe I just forgot to write down dates. Either way, the dialog class itself seems to be working correctly, and has all the features I originally intended. We have an opportunity to make a Halloween themed game so let's try and use this for that and see how it goes.
+
+My first thought is about application state itself. But before we can figure that out we need to decide on what kind of game this will be. Honestly I want to make it a top down game like Zelda, Earthbound, or Pokemon, and you move a little character around and talk to people. If we do it like that, it means there are 3 basic application states we'd have: menu, dialog, and overworld. The thing that's a little tricky is getting the overworld to still display while doing dialog or menu. Perhaps for this hackathon we just don't give any non-player characters sprites with animations. That was we can just stick objects in the world with custom update code. And our application state object will update that or whatever, but always draw gamemaker objects.
+
+That should work. Let's make something that displays and lets the user interact with dialog and see where we get. I like the idea of only ever having to use functions to interact with dialog display, but we need a GameMaker instance in order to actually draw things to the game. I bet it's possible to define a persistant object that draws dialog, and automatically add it to the game world. Then we simply define functions to set this object visible or not, and tell it what dialog to draw. Let's try that.
