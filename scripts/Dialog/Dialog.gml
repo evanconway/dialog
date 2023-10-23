@@ -107,7 +107,8 @@ function dialog_get_choice(dialog) {
 
 function dialog_get_choice_text(dialog) {
 	with (dialog) {
-		return get_current_step().choices[choice].text[language_index];
+		var text = get_current_step().choices[choice].text
+		return array_length(text) > 0 ? text[language_index] : "";
 	}
 }
 
