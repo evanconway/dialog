@@ -1,9 +1,12 @@
 {
   "FolderOrderSettings": [
     {"name":"Dialog","order":17,"path":"folders/Dialog.yy",},
+    {"name":"Dialog_Display","order":19,"path":"folders/Dialog_Display.yy",},
   ],
   "ResourceOrderSettings": [
     {"name":"dialog_tests","order":1,"path":"scripts/dialog_tests/dialog_tests.yy",},
+    {"name":"obj_test","order":20,"path":"objects/obj_test/obj_test.yy",},
+    {"name":"Dialog_Display","order":1,"path":"scripts/Dialog_Display/Dialog_Display.yy",},
     {"name":"Room1","order":15,"path":"rooms/Room1/Room1.yy",},
   ],
 }

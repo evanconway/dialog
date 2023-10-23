@@ -105,13 +105,19 @@ function dialog_get_choice(dialog) {
 	return dialog.choice;
 }
 
+function dialog_get_choice_text(dialog) {
+	with (dialog) {
+		return get_current_step().choices[choice].text[language_index];
+	}
+}
+
 /**
  * Set choice index.
  *
  * @param {Struct.Dialog} dialog The Dialog instance to set the choice of.
  * @param {real} choice_index New index to set current choice to. Value is clamped to valid options for the current step.
  */
-function dialog_choice_set(dialog, choice_index) {
+function dialog_set_choice(dialog, choice_index) {
 	with (dialog) {
 		choice = clamp(choice_index, 0, array_length(get_current_step().choices) - 1);
 	}
