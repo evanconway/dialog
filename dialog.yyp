@@ -29,7 +29,7 @@
     {"id":{"name":"fnt_generic","path":"fonts/fnt_generic/fnt_generic.yy",},},
     {"id":{"name":"obj_interact","path":"objects/obj_interact/obj_interact.yy",},},
     {"id":{"name":"Sprite2","path":"sprites/Sprite2/Sprite2.yy",},},
-    {"id":{"name":"obj_manager","path":"objects/obj_manager/obj_manager.yy",},},
+    {"id":{"name":"obj_application","path":"objects/obj_application/obj_application.yy",},},
     {"id":{"name":"Dialog_Display","path":"scripts/Dialog_Display/Dialog_Display.yy",},},
     {"id":{"name":"Game_world","path":"scripts/Game_world/Game_world.yy",},},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},

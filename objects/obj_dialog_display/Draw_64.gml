@@ -1,17 +1,5 @@
 if (dialog == undefined) exit;
 
-if (keyboard_check_pressed(vk_space)) {
-	if (dialog_is_at_end(dialog)) {
-		dialog = undefined;
-		exit;
-	}
-	dialog_advance(dialog);
-} else if (keyboard_check_pressed(vk_down)) {
-	dialog_choice_increment(dialog)
-} else if (keyboard_check_pressed(vk_up)) {
-	dialog_choice_decrement(dialog)
-}
-
 draw_set_font(fnt_generic);
 draw_set_color(c_white);
 draw_set_alpha(1);
