@@ -1,5 +1,6 @@
 function dialog_display_init() {
-	global.dialog_display = instance_create_depth(0, 0, 0, obj_dialog_display);
+	global.dialog = undefined;
+	instance_create_depth(0, 0, 0, obj_dialog_display);
 }
 
 /*
@@ -13,21 +14,20 @@ file instead of manually putting it in a room
  * @param {Struct.Dialog} new_dialog
  */
 function dialog_display_set_dialog(new_dialog) {
-	global.dialog_display.dialog = new_dialog;
+	global.dialog = new_dialog;
 }
 
 
 function dialog_display_update() {
-	var dialog = global.dialog_display.dialog;
 	if (keyboard_check_pressed(vk_space)) {
-		if (dialog_is_at_end(dialog)) {
-			global.dialog_display.dialog = undefined;
+		if (dialog_is_at_end(global.dialog)) {
+			global.dialog = undefined;
 			exit;
 		}
-		dialog_advance(dialog);
+		dialog_advance(global.dialog);
 	} else if (keyboard_check_pressed(vk_down)) {
-		dialog_choice_increment(dialog);
+		dialog_choice_increment(global.dialog);
 	} else if (keyboard_check_pressed(vk_up)) {
-		dialog_choice_decrement(dialog);
+		dialog_choice_decrement(global.dialog);
 	}
 }

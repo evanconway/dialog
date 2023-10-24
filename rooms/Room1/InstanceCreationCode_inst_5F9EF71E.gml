@@ -16,12 +16,22 @@ dialog_data = [
 	{
 		name: "left",
 		text: "I agree. Turning left here is smart.",
-		goto: "bye"
+		choices: [
+			{
+				text: [],
+				goto: "bye"
+			}
+		]
 	},
 	{
 		name: "right",
 		text: "Good choice. That should work out well.",
-		goto: "bye"
+		choices: [
+			{
+				text: [],
+				goto: "bye"
+			}
+		]
 	},
 	{
 		name: "bye",

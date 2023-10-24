@@ -1,4 +1,4 @@
-if (dialog == undefined) exit;
+if (global.dialog == undefined) exit;
 
 draw_set_font(fnt_generic);
 draw_set_color(c_white);
@@ -12,14 +12,14 @@ var draw_x = floor(display_get_gui_width() / 2);
 var draw_y = floor(display_get_gui_height() / 2);
 
 // feather ignore GM1041
-draw_text(draw_x, draw_y + cursor * height, dialog_get_text(dialog));
+draw_text(draw_x, draw_y + cursor * height, dialog_get_text(global.dialog));
 
 cursor += 1;
 
-var choices = dialog_get_choices_text(dialog);
+var choices = dialog_get_choices_text(global.dialog);
 
 for (var i = 0; i < array_length(choices); i++) {
 	draw_text(draw_x + 30, draw_y + cursor * height, choices[i]);
-	if (i == dialog_get_choice(dialog)) draw_text(draw_x, draw_y + cursor * height, ">");
+	if (i == dialog_get_choice(global.dialog)) draw_text(draw_x, draw_y + cursor * height, ">");
 	cursor += 1;
 }
