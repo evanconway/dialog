@@ -5,9 +5,14 @@
   ],
   "ResourceOrderSettings": [
     {"name":"dialog_tests","order":1,"path":"scripts/dialog_tests/dialog_tests.yy",},
+    {"name":"obj_player","order":22,"path":"objects/obj_player/obj_player.yy",},
+    {"name":"spr_player","order":23,"path":"sprites/spr_player/spr_player.yy",},
     {"name":"fnt_generic","order":2,"path":"fonts/fnt_generic/fnt_generic.yy",},
-    {"name":"obj_test","order":20,"path":"objects/obj_test/obj_test.yy",},
+    {"name":"obj_interact","order":24,"path":"objects/obj_interact/obj_interact.yy",},
+    {"name":"Sprite2","order":25,"path":"sprites/Sprite2/Sprite2.yy",},
+    {"name":"obj_manager","order":20,"path":"objects/obj_manager/obj_manager.yy",},
     {"name":"Dialog_Display","order":1,"path":"scripts/Dialog_Display/Dialog_Display.yy",},
+    {"name":"Game_world","order":21,"path":"scripts/Game_world/Game_world.yy",},
     {"name":"Room1","order":15,"path":"rooms/Room1/Room1.yy",},
   ],
 }
