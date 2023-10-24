@@ -11,14 +11,14 @@
   },
   "defaultScriptType": 1,
   "Folders": [
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Dialog","folderPath":"folders/Dialog.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Dialog_Display","folderPath":"folders/Dialog_Display.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Dialog","folderPath":"folders/Dialog.yy",},
   ],
   "IncludedFiles": [],
   "isEcma": false,
   "LibraryEmitters": [],
   "MetaData": {
-    "IDEVersion": "2023.8.1.102",
+    "IDEVersion": "2023.8.2.108",
   },
   "resources": [
     {"id":{"name":"dialog_tests","path":"scripts/dialog_tests/dialog_tests.yy",},},
