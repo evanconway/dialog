@@ -9,7 +9,7 @@
     {"name":"spr_player","order":23,"path":"sprites/spr_player/spr_player.yy",},
     {"name":"fnt_generic","order":2,"path":"fonts/fnt_generic/fnt_generic.yy",},
     {"name":"obj_interact","order":24,"path":"objects/obj_interact/obj_interact.yy",},
-    {"name":"Sprite2","order":25,"path":"sprites/Sprite2/Sprite2.yy",},
+    {"name":"spr_interact","order":25,"path":"sprites/spr_interact/spr_interact.yy",},
     {"name":"obj_application","order":20,"path":"objects/obj_application/obj_application.yy",},
     {"name":"Dialog_Display","order":1,"path":"scripts/Dialog_Display/Dialog_Display.yy",},
     {"name":"Game_world","order":21,"path":"scripts/Game_world/Game_world.yy",},
